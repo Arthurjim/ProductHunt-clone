@@ -8,6 +8,7 @@ import firebase from '../firebase';
 //validaciones
 import useValidacion from "../hooks/useValidacion";
 import validarIniciarSesion from "../validacion/validarIniciarSesion";
+import router from "next/router";
 
 const INTI_STATE = {
    
@@ -17,21 +18,18 @@ const INTI_STATE = {
 
 const Login = () => {
     const [error,setError]=useState(false)
-    const {valores,errores, handleSubmit,handleChange,handleBlur}=useValidacion(INTI_STATE,validarIniciarSesion,crearCuenta)
+    const {valores,errores, handleSubmit,handleChange,handleBlur}=useValidacion(INTI_STATE,validarIniciarSesion,login)
  
     const {email,password} = valores;
-    async function crearCuenta(){
-       try {
-        await firebase.registrar(nombre,email,password)
-       Router.push('/');
-       } catch (error) {
-          console.error('Hubo un errr al crear el usuario',error.message)
-          setError(error.message)
-          setTimeout(()=>{
-             setError('')
-          },3000)
-       }
-    }
+   async  function login(){
+      try {
+         const usuario = await firebase.login(email, password)
+         router.push('/')
+      } catch (err) {
+         console.error(err.message)
+         setError(err.message)
+      }
+   }
     return (
        <div>
          <Layout>

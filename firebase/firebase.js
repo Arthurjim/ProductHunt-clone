@@ -19,6 +19,16 @@ class Firebase {
             displayName:nombre
         })
     }
+    //inicia sesion del usuario
+    async login(email, password){
+        return this.auth.signInWithEmailAndPassword(email,password);
+         
+    }
+
+    //cerrar Sesion
+    async singOutuser(){
+        await this.auth.signOut(); 
+    }
 }
 
 const firebase = new Firebase()
